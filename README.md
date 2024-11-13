@@ -37,7 +37,7 @@ Cada paso de su configuración ya se ha realizado previamente en el curso, por l
 
   - Para los tipos `npm i --save-dev @types/ws`
 
-- Paquete `nombre_paquete` usando `comando_paquete` desde `url_paquete`
+- Paquete `uuid` usando `npm i uuid` desde `https://www.npmjs.com/package/uuid`
 
 - Paquete `nombre_paquete` usando `comando_paquete` desde `url_paquete`
 

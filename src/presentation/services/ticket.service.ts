@@ -56,13 +56,14 @@ export class TicketService {
     );
 
     if (!ticket) {
-      return { status: "Error", message: "There aren't pending tickets" };
+      return { status: "error", message: "No hay tickets pendientes" };
     }
 
     ticket.handleAtDesk = desk;
     ticket.handleAt = new Date();
 
     this.workingOnTickets.unshift({ ...ticket });
+    this.onTicketNumberChanged();
 
     return { status: "ok", ticket: ticket };
   }

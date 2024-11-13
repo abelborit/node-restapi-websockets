@@ -1,11 +1,36 @@
 const lblPending = document.querySelector("#lbl-pending");
+const deskHeader = document.querySelector("h1");
+const noMoreAlert = document.querySelector(".alert");
+
+/* para tener los query parameters de la url */
+const searchParams = new URLSearchParams(window.location.search);
+// console.log({ searchParams });
+
+if (!searchParams.has("escritorio")) {
+  window.location = "index.html";
+  throw new Error("parámetro 'escritorio' es requerido");
+}
+
+const deskNumber = searchParams.get("escritorio");
+deskHeader.innerText = deskNumber;
+
+function checkTicketCount(currentCount = 0) {
+  // noMoreAlert.classList.toggle("d-none");
+  if (currentCount === 0) {
+    noMoreAlert.classList.remove("d-none");
+  } else {
+    noMoreAlert.classList.add("d-none");
+  }
+
+  lblPending.innerHTML = currentCount;
+}
 
 async function loadInitialCount() {
   const pendingTickets = await fetch("/api/ticket/pending").then((response) =>
     response.json()
   );
 
-  lblPending.innerHTML = pendingTickets.length || 0;
+  checkTicketCount(pendingTickets.length);
 }
 
 function connectToWebSockets() {
@@ -20,7 +45,7 @@ function connectToWebSockets() {
       return `This is an unexpected type ${type}`;
     }
 
-    lblPending.innerHTML = payload;
+    checkTicketCount(payload);
   };
 
   socket.onclose = (event) => {

@@ -27,9 +27,12 @@ export class Server {
     this.port = port;
     this.publicPath = public_path;
     this.routes = routes;
+
+    this.configure();
   }
 
-  async start() {
+  /* se está separando la lógica de los middlewares y demás porque como no estamos usando el método start de esta clase server, porque ya estamos mandando a llamar al listen del httpServer que creamos en "app.ts", entonces estamos separando esa lógica para que se llame por separado y lo mandamos a llamar en el constructor para que cuando se cree esta clase entonces se mande a llamar también este método configure() sin la necesidad de mandar a llamar al método start() porque no lo necesitamos ahora */
+  private configure() {
     //* Middlewares
     this.app.use(express.json()); // raw
     this.app.use(express.urlencoded({ extended: true })); // x-www-form-urlencoded
@@ -40,14 +43,16 @@ export class Server {
     //* Routes
     this.app.use(this.routes);
 
-    //* SPA /^\/(?!api).*/  <== Únicamente si no empieza con la palabra api
-    this.app.get("*", (req, res) => {
+    //* SPA /^\/(?!api).*/  <== Únicamente si no empieza con la palabra api nos va a reponder nuestro index.html porque si empieza con api entonces quiere decir que es alguna de nuestras rutas
+    this.app.get(/^\/(?!api).*/, (req, res) => {
       const indexPath = path.join(
         __dirname + `../../../${this.publicPath}/index.html`
       );
       res.sendFile(indexPath);
     });
+  }
 
+  async start() {
     this.serverListener = this.app.listen(this.port, () => {
       console.log(`Server running on port ${this.port} ✅`);
     });

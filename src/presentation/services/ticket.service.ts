@@ -2,7 +2,7 @@ import { UuidAdapter } from "../../config/uuid.adapter";
 import { TicketInterface } from "../../domain/interfaces/ticket.interface";
 
 export class TicketService {
-  private readonly tickets: TicketInterface[] = [
+  public readonly tickets: TicketInterface[] = [
     /* como queremos que nuestro backend le asigne el id a los tickets (para que no lo asigne el lado cliente - frontend) haremos uso del "uuid" package */
     { id: UuidAdapter.uuidv4(), number: 1, createdAt: new Date(), done: false },
     { id: UuidAdapter.uuidv4(), number: 2, createdAt: new Date(), done: false },
@@ -12,11 +12,18 @@ export class TicketService {
     { id: UuidAdapter.uuidv4(), number: 6, createdAt: new Date(), done: false },
   ];
 
+  /* será los tickets en los cuales estamos trabajando actualmente en la pantalla (son los que serán desde la pantalla del cliente y lo manejaremos que tengo 4 tickets) */
+  private readonly workingOnTickets: TicketInterface[] = [];
+
   public get pendingTickets(): TicketInterface[] {
     return this.tickets.filter((ticket) => !ticket.handleAtDesk);
   }
 
-  public lastTicket(): number {
+  public get lastWorkingOnTickets(): TicketInterface[] {
+    return this.workingOnTickets.slice(0, 4);
+  }
+
+  public get lastTicket(): number {
     /* se coloca el -- !.number -- porque ya hicimos la validación de que sí hay o no hay tickets */
     return this.tickets.length > 0 ? this.tickets.at(-1)!.number : 0;
   }
@@ -24,7 +31,7 @@ export class TicketService {
   public createTicket() {
     const ticket: TicketInterface = {
       id: UuidAdapter.uuidv4(),
-      number: this.lastTicket() + 1,
+      number: this.lastTicket + 1,
       // number: this.tickets.length + 1,
       createdAt: new Date(),
       handleAtDesk: undefined,
@@ -48,6 +55,8 @@ export class TicketService {
 
     ticket.handleAtDesk = desk;
     ticket.handleAt = new Date();
+
+    this.workingOnTickets.unshift({ ...ticket });
 
     return { status: "ok", ticket: ticket };
   }

@@ -4,7 +4,7 @@ import path from "path"; // este "path" ya viene nativo en node para trabajar co
 
 interface ServerOptions {
   port: number;
-  routes: Router;
+  // routes: Router;
   public_path?: string;
 }
 
@@ -18,15 +18,15 @@ export class Server {
 
   private readonly port: number;
   private readonly publicPath: string;
-  private readonly routes: Router;
+  // private readonly routes: Router;
 
   constructor(serverOptions: ServerOptions) {
-    const { port, public_path = "public", routes } = serverOptions;
+    const { port, public_path = "public" /* , routes */ } = serverOptions;
 
     /* la propiedades readonly solo se pueden modificar en el constructor, ya después no se puede */
     this.port = port;
     this.publicPath = public_path;
-    this.routes = routes;
+    // this.routes = routes;
 
     this.configure();
   }
@@ -41,7 +41,7 @@ export class Server {
     this.app.use(express.static(this.publicPath));
 
     //* Routes
-    this.app.use(this.routes);
+    // this.app.use(this.routes);
 
     //* SPA /^\/(?!api).*/  <== Únicamente si no empieza con la palabra api nos va a reponder nuestro index.html porque si empieza con api entonces quiere decir que es alguna de nuestras rutas
     this.app.get(/^\/(?!api).*/, (req, res) => {
@@ -50,6 +50,11 @@ export class Server {
       );
       res.sendFile(indexPath);
     });
+  }
+
+  //* Routes
+  public setRoutes(router: Router) {
+    this.app.use(router);
   }
 
   async start() {

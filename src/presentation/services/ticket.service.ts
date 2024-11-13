@@ -1,7 +1,12 @@
 import { UuidAdapter } from "../../config/uuid.adapter";
 import { TicketInterface } from "../../domain/interfaces/ticket.interface";
+import { WebSocketServerService } from "./websocket-server.service";
 
 export class TicketService {
+  constructor(
+    private readonly webSocketServerService = WebSocketServerService.instance
+  ) {}
+
   public readonly tickets: TicketInterface[] = [
     /* como queremos que nuestro backend le asigne el id a los tickets (para que no lo asigne el lado cliente - frontend) haremos uso del "uuid" package */
     { id: UuidAdapter.uuidv4(), number: 1, createdAt: new Date(), done: false },
@@ -40,6 +45,7 @@ export class TicketService {
     };
 
     this.tickets.push(ticket);
+    this.onTicketNumberChanged();
 
     return ticket;
   }
@@ -79,5 +85,12 @@ export class TicketService {
     });
 
     return { status: "ok", ticket: ticket };
+  }
+
+  private onTicketNumberChanged() {
+    this.webSocketServerService.sendMessage(
+      "on-ticket-count-changed",
+      this.pendingTickets.length
+    );
   }
 }

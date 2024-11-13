@@ -44,6 +44,15 @@ export class WebSocketServerService {
     );
   }
 
+  /* para enviarle un mensaje (todo lo que queremos enviar, en este caso el type y el payload) a todos los clientes que estén conectados a nuestro websocket. Estamos haciendo un "Server broadcast" */
+  public sendMessage(type: string, payload: Object) {
+    this.wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify({ type, payload }));
+      }
+    });
+  }
+
   public start() {
     /* si vamos a usar el tipado de -- ws: WebSocket -- tenemos que importar el WebSocket del package "ws" porque si no entonces va a utilizar el WebSocket nativo y por ende su implementación navita de los WebSockets y tendrá entonces otros métodos y propiedades que no son enteramente compatibles con lo que estamos recibiendo de "ws" en el -- (ws: WebSocket) -- */
     this.wss.on("connection", (ws: WebSocket) => {

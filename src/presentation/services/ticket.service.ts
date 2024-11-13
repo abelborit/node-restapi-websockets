@@ -7,7 +7,7 @@ export class TicketService {
     private readonly webSocketServerService = WebSocketServerService.instance
   ) {}
 
-  public readonly tickets: TicketInterface[] = [
+  public tickets: TicketInterface[] = [
     /* como queremos que nuestro backend le asigne el id a los tickets (para que no lo asigne el lado cliente - frontend) haremos uso del "uuid" package */
     { id: UuidAdapter.uuidv4(), number: 1, createdAt: new Date(), done: false },
     { id: UuidAdapter.uuidv4(), number: 2, createdAt: new Date(), done: false },
@@ -64,6 +64,7 @@ export class TicketService {
 
     this.workingOnTickets.unshift({ ...ticket });
     this.onTicketNumberChanged();
+    this.onWorkingOnTicketChanged();
 
     return { status: "ok", ticket: ticket };
   }
@@ -77,7 +78,7 @@ export class TicketService {
       return { status: "Error", message: "Ticket don't find" };
     }
 
-    this.tickets.map((ticketElement) => {
+    this.tickets = this.tickets.map((ticketElement) => {
       if (ticketElement.id === id) {
         ticket.done = true;
       }
@@ -92,6 +93,13 @@ export class TicketService {
     this.webSocketServerService.sendMessage(
       "on-ticket-count-changed",
       this.pendingTickets.length
+    );
+  }
+
+  private onWorkingOnTicketChanged() {
+    this.webSocketServerService.sendMessage(
+      "on-working-changed",
+      this.lastWorkingOnTickets
     );
   }
 }

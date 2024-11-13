@@ -21,4 +21,5 @@ const createTicket = async () => {
 
 createTicketBtn.addEventListener("click", createTicket);
 
+/* Init functions */
 getLastTicket();

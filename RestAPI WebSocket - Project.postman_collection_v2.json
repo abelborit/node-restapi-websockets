@@ -1,0 +1,97 @@
+{
+	"info": {
+		"_postman_id": "5fcf5581-07c2-4393-b96f-4e29a2744365",
+		"name": "RestAPI WebSocket - Project",
+		"description": "Falta crear la conexión por WebSocket. La llamaremos como \"WebSocket - RestAPI\" y es crear una nueva request pero de tipo -- WebSocket -- para probar las conexiones con el servidor. Hay que colocar -- localhost:3000/ws --",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "25203359"
+	},
+	"item": [
+		{
+			"name": "Request with and without /api/",
+			"item": [
+				{
+					"name": "Request without /api/ - return index.html",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/ticket"
+					},
+					"response": []
+				},
+				{
+					"name": "Request with /api/ - return 404 of API routes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/api/ticket-project"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get all tickets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:3000/api/ticket/"
+			},
+			"response": []
+		},
+		{
+			"name": "Get last ticket",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:3000/api/ticket/last"
+			},
+			"response": []
+		},
+		{
+			"name": "Get pending tickets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:3000/api/ticket/pending"
+			},
+			"response": []
+		},
+		{
+			"name": "Get working on tickets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:3000/api/ticket/working-on"
+			},
+			"response": []
+		},
+		{
+			"name": "Create ticket",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": "localhost:3000/api/ticket/create"
+			},
+			"response": []
+		},
+		{
+			"name": "Draw ticket - desk",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:3000/api/ticket/draw/escritorio-1"
+			},
+			"response": []
+		},
+		{
+			"name": "Done ticket",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": "localhost:3000/api/ticket/done/0d467d94-152b-4eb6-942b-74b1903b8fee"
+			},
+			"response": []
+		}
+	]
+}

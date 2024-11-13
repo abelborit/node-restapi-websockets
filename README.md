@@ -33,8 +33,12 @@ Cada paso de su configuración ya se ha realizado previamente en el curso, por l
 
 ### \* RECURSOS A USAR:
 
+- Paquete `WebSocket library` usando `npm i ws` desde `https://www.npmjs.com/package/ws`
+
+  - Para los tipos `npm i --save-dev @types/ws`
+
 - Paquete `nombre_paquete` usando `comando_paquete` desde `url_paquete`
-- Paquete `nombre_paquete` usando `comando_paquete` desde `url_paquete`
+
 - Paquete `nombre_paquete` usando `comando_paquete` desde `url_paquete`
 
 ### \* NOTAS:
